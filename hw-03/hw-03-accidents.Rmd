@@ -154,16 +154,25 @@ ggplot(data = accidents, aes(x = time, fill = severity)) +
 - Do certain vehicle types have more accidents in specific conditions?
 
 **Your visualization:**
-```{r custom-visualization, eval = FALSE}
-# Your code here
+```{r custom-visualization, eval = TRUE}
+ggplot(data = accidents, aes(x = speed_limit, y = vehicles, color = severity)) +
+  geom_point(alpha = 0.4) +
+  geom_smooth(method = "lm") +
+  theme_minimal() +
+  labs(
+    title = "Relationship between speed limit, the vehicles, and accident severity",
+    x = "Speed limit (mph)",
+    y = "Number of Vehicles Involved",
+    color = "Severity"
+  )
 ```
 
-**What question does your visualization answer?**
+**What question does your visualization answer?** My visualization shows the connection between number of vehicles in the accident, along with the speed limit, to compare if they lean more fatal, serious, or slight.
 
 
-**What variables were used:** 
+**What variables were used:** I used 3 variables.
 
-**Interpretation (3-4 sentences):** What patterns or insights does your visualization reveal?
+**Interpretation (3-4 sentences):** Oddly enough my graph is showing that fatal accidents are mainly occurring on low speed limit areas. That would lead me to assume that this is due to people speeding on roads they shouldn't be. I also noticed that many of these fatal accidents include more than two cars in the collision.
 
 *After completing Exercise 4:*
 
