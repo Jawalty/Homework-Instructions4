@@ -1,62 +1,62 @@
 ## load packages ----------------------------------------------------------------
 #
-#library(tidyverse)
-#library(rvest)
-#library(here) 
+library(tidyverse)
+library(rvest)
+library(here) 
 #
 ## function: scrape_pac ---------------------------------------------------------
 #
-#scrape_pac <- function(url) {
-#  
-#  # read the page
-#  page <- ___(___)
-#  
-#  # exract the table
-#  pac <-  page %>%
-#    # select node .DataTable (identified using the SelectorGadget)
-#    html_node(".DataTable-Partial") %>%
-#    # parse table at node td into a data frame
-#    #   table has a head and empty cells should be filled with NAs
-#    html_table("td", header = ___, fill = ___) %>%
-#    # convert to a tibble
-#    as_tibble()
-#  
-#  # rename variables
-#  pac <- pac %>%
-#    # rename columns
-#    rename(
-#      name = ___ ,
-#      country_parent = ___,
-#      total = ___,
-#      dems = ___,
-#      repubs = ___
-#    )
-#  
-#  # fix name
-#  pac <- pac %>%
-#    # remove extraneous whitespaces from the name column
-#    mutate(name = ___)
-#  
-#  # add year
-#  pac <- pac %>%
-#    # extract last 4 characters of the URL and save as year
-#    mutate(year = ___)
-#  
-#  # return data frame
-#  pac
-#  
-#}
+scrape_pac <- function(url) {
+  
+  # read the page
+  page <- read_html(
+    httr::content(
+      httr::GET(url, httr::user_agent("Mozilla/5.0")),
+     as = "text", encoding = "UTF-8"
+    )
+  )
+  
+  # extract the table
+  pac <- page |>
+    html_node(".DataTable-Partial") |>
+    html_table(header = TRUE, fill = TRUE) |>
+    as_tibble()
+  
+  # rename variables
+  pac <- pac |>
+    rename(
+      name = 1,
+      country_parent = 2,
+      total = 3,
+      dems = 4,
+      repubs = 5
+    )
+  
+  # fix name
+  pac <- pac |>
+    # remove extraneous whitespaces from the name column
+    mutate(name = str_squish(name))
+  
+  # add year
+  pac <- pac |>
+    # extract last 4 characters of the URL and save as year
+    mutate(year = str_sub(url, -4))
+  
+  # return data frame
+  pac
+  
+}
 #
 ## test function ----------------------------------------------------------------
 #
-#url_2024 <- "___"
-#pac_2024 <- scrape_pac(___)
+url_2024 <- "https://www.opensecrets.org/political-action-committees-pacs/foreign-connected-pacs/2024"
+pac_2024 <- scrape_pac(url_2024)
 #
-#url_2020 <- "___"
-#pac_2020 <- scrape_pac(___)
+url_2020 <- "https://www.opensecrets.org/political-action-committees-pacs/foreign-connected-pacs/2020"
+pac_2020 <- scrape_pac(url_2020)
 #
-#url_2000 <- "___"
-#pac_2000 <- scrape_pac(___)
+url_2000 <- "https://www.opensecrets.org/political-action-committees-pacs/foreign-connected-pacs/2000"
+pac_2000 <- scrape_pac(url_2000)
 #
 ## list of urls -----------------------------------------------------------------
 #
